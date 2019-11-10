@@ -7,11 +7,9 @@ library(RColorBrewer)
 fluidPage(
   theme=shinytheme("sandstone"),
   navbarPage(
-    
-      # <--- To use a theme, uncomment this
     "Smashing Toolbox",
     
-    #TAB UPLOAD      
+    # TAB UPLOAD ----     
     tabPanel("Data Upload",
              
              titlePanel("Uploading Files"),
@@ -69,17 +67,17 @@ fluidPage(
                
              )
              
+            
              
-             
-             
-    ),# finish TAB UPLOAD
+    ), # finish TAB UPLOAD ----
     
-    #TODO: function: data preparation and cleasing
     
-    #TAB K-MEANS      
+    
+    
+    # TAB K-MEANS   ----   
     tabPanel("K-means", 
              
-             #SIDEBAR PANEL
+             # Sidebar panel for inputs  ----
              sidebarPanel(
                
                selectInput('xcol', 'X Variable', ""),
@@ -91,7 +89,7 @@ fluidPage(
                sliderInput('clusters', "Choose a cluster", 1, 20, 3)
              ),
              
-             #MAIN PANEL
+             # MAIN PANEL ----
              mainPanel(
                tabsetPanel(
                  tabPanel("Plots",
@@ -120,9 +118,9 @@ fluidPage(
                           Iteratively move the centers to minimize the total within cluster variance (data-center distance) "  
                           
                  )
-               ) #end tabsetPanel
-               ) #end main panel
-               ), #end TAB K-MEAN
+               ) #end tabsetPanel 
+               ) #end main panel 
+               ), #end TAB K-MEAN 
     
     
     
@@ -130,9 +128,10 @@ fluidPage(
     
   
     
-    #TAB HC
+    
+    #TAB HC ----
     tabPanel("HC",
-             #SIDEBAR PANEL
+             #SIDEBAR PANEL ----
              sidebarPanel(
                
                selectInput("method_dis", "Distance methods:",
@@ -158,8 +157,10 @@ fluidPage(
                
              ), #end SIDEBAR PANEL
              
+             # MAIN PANEL ----
              mainPanel(
                tabsetPanel(
+                 # tab Plots ----
                  tabPanel("Plots",
                           
                           plotOutput("dendPlot"),
@@ -169,6 +170,7 @@ fluidPage(
                   
                           
                  ),
+                 # tab 2 ----
                  tabPanel("Informations",
                           
                           h4("What it is:"),
@@ -191,11 +193,134 @@ fluidPage(
                ) #end main panel
                
             
-             )#end tabPanel TAB HC
+             ),#end tabPanel TAB HC
     
-             )
     
-)
+    #TAB PCA ----
+    tabPanel("PCA",
+             # # Sidebar panel for inputs ----
+             # sidebarPanel(
+             #   "sidepanel"
+             # ), #end SIDEBAR PANEL
+             
+             # MAIN PANEL ----
+             mainPanel(
+               tabsetPanel(
+                 # Tab plot ----
+                 tabPanel("Plots",
+                          plotOutput("biPlot"),
+                          sliderInput("slider_midpoint", "midpoint:", 0, 10 , 0.5,step = 0.1),
+                          plotOutput("scree.pca.Plot"),
+                          plotOutput("pvePlot"),
+                          plotOutput("cumulative.pvePlot"),
+                          verbatimTextOutput("rotation.matrix")
+                          #plotOutput("starPlot")
+                  
+                 ),
+                # Tab Info ----
+                 tabPanel("Informations",
+                          h4("What it is:"),
+                          "Unsupervised, linear, non-parametric method.",
+                          
+                          h4("When:"),
+                          "First exploration of multidimensional data (no assumptions needed). Data driven!",
+                          
+                          h4("What it does:"),
+                          "PCA reduces the dimensionality of a dataset in order to be more understandable representation.",
+                          
+                          h4("How it does this"),
+                          "Find new axes (principal components) that represent the data space in a reduced set of dimensions 
+                          in order capture the most important information in the data.",
+                          h4(""),
+                          "Capture the maximal variance of the data.",
+                          h4(""),
+                          "Highlight the global patterns in the data set." 
+  
+                 ) #end tabPanel
+               ) #end tabsetPanel
+               ) #end main panel
+    ), #end PCA panel
+    
+    
+    #TAB TSNE ----      
+    tabPanel("tSNE",
+             #SIDEBAR PANEL
+             sidebarPanel(
+               selectInput('category.tSNE', 'Select a category', ""),
+               sliderInput("slider_dim", "Dimension:", 1, 3 , 2),
+               sliderInput("slider_perplexity", "Perplexity:", 1, 50 , 10),
+               sliderInput("slider_max_iter", "Max iteration:", 1, 2000 , 500)
+             ), #end SIDEBAR PANEL
+             
+             mainPanel(
+               tabsetPanel(
+                 tabPanel("Plots",
+                          plotOutput("tSNEPlot")
+                 ),
+                 tabPanel("Informations",
+                          h4("What it is:"),
+                          "Unsupervised, linear, non-parametric method.",
+                          
+                          h4("When:"),
+                          "First exploration of multidimensional data (no assumptions needed). Data driven!",
+                          
+                          h4("What it does:"),
+                          "PCA reduces the dimensionality of a dataset in order to be more understandable representation.",
+                          
+                          h4("How it does this"),
+                          "Find new axes (principal components) that represent the data space in a reduced set of dimensions 
+                          in order capture the most important information in the data.",
+                          h4(""),
+                          "Capture the maximal variance of the data.",
+                          h4(""),
+                          "Highlight the global patterns in the data set." 
+                          
+                 ) #end tabPanel
+               ) #end tabsetPanel
+             ) #end main panel
+    ), #end tSNEpanel        
+               
+    
+    #TAB SOMs ----
+    tabPanel("SOMs",
+             #SIDEBAR PANEL
+             sidebarPanel(
+               selectInput('category.SOMs', 'Select a category', ""),
+               sliderInput("slider_xdim", "xdim", 1, 50 , 4),
+               sliderInput("slider_ydim", "ydim:", 1, 50 , 4)
+               #sliderInput("slider_max_iter", "Max iteration:", 1, 2000 , 500)
+             ), #end SIDEBAR PANEL
+
+             mainPanel(
+               tabsetPanel(
+                 tabPanel("Plots",
+                          plotOutput("somsPlot")
+                 ),
+                 tabPanel("Informations",
+                          h4("What it is:"),
+                          "Unsupervised, linear, non-parametric method.",
+
+                          h4("When:"),
+                          "First exploration of multidimensional data (no assumptions needed). Data driven!",
+
+                          h4("What it does:"),
+                          "PCA reduces the dimensionality of a dataset in order to be more understandable representation.",
+
+                          h4("How it does this"),
+                          "Find new axes (principal components) that represent the data space in a reduced set of dimensions
+                          in order capture the most important information in the data.",
+                          h4(""),
+                          "Capture the maximal variance of the data.",
+                          h4(""),
+                          "Highlight the global patterns in the data set."
+
+                 ) #end tabPanel
+               ) #end tabsetPanel
+             ) #end main panel
+    ) #end SOMs panel
+
+             )#end navbarpage
+)#end Fluid page
   
   
   
