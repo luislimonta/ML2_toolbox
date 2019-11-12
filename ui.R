@@ -5,7 +5,7 @@ library(shinythemes)
 library(RColorBrewer)
 
 fluidPage(
-  theme=shinytheme("sandstone"),
+  theme=shinytheme("readable"),
   navbarPage(
     "Smashing Toolbox",
     
@@ -78,7 +78,10 @@ fluidPage(
     tabPanel("K-means", 
              
              # Sidebar panel for inputs  ----
-             sidebarPanel(
+             absolutePanel(
+               bottom = 20, right = 20, width = 200,
+               draggable = TRUE,
+               style = "opacity: 0.92",
                
                selectInput('xcol', 'X Variable', ""),
                selectInput('ycol', 'Y Variable', ""),
@@ -132,7 +135,10 @@ fluidPage(
     #TAB HC ----
     tabPanel("HC",
              #SIDEBAR PANEL ----
-             sidebarPanel(
+             absolutePanel(
+               bottom = 20, right = 20, width = 150,
+               draggable = TRUE,
+               style = "opacity: 0.92",
                
                selectInput("method_dis", "Distance methods:",
                            c("Euclidean" = "euclidean",
@@ -163,10 +169,10 @@ fluidPage(
                  # tab Plots ----
                  tabPanel("Plots",
                           
-                          plotOutput("dendPlot"),
+                          plotOutput("dendPlot",width = "120%",height="800px"),
                           
-                          #d3heatmapOutput("heatmap", height="8000px", width="100%")
-                          plotOutput("heatmatPlot")
+                          #d3heatmapOutput("heatmap", height="8000px", width="100%"),
+                          plotOutput("heatmatPlot",height="800px",width = "120%")
                   
                           
                  ),
@@ -208,7 +214,7 @@ fluidPage(
                tabsetPanel(
                  # Tab plot ----
                  tabPanel("Plots",
-                          plotOutput("biPlot"),
+                          plotOutput("biPlot",width = "150%",height="800px"),
                           sliderInput("slider_midpoint", "midpoint:", 0, 10 , 0.5,step = 0.1),
                           plotOutput("scree.pca.Plot"),
                           plotOutput("pvePlot"),
@@ -245,7 +251,10 @@ fluidPage(
     #TAB TSNE ----      
     tabPanel("tSNE",
              #SIDEBAR PANEL
-             sidebarPanel(
+             absolutePanel(
+               bottom = 20, right = 20, width = 150,
+               draggable = TRUE,
+               style = "opacity: 0.92",
                selectInput('category.tSNE', 'Select a category', ""),
                sliderInput("slider_dim", "Dimension:", 1, 3 , 2),
                sliderInput("slider_perplexity", "Perplexity:", 1, 50 , 10),
@@ -255,7 +264,7 @@ fluidPage(
              mainPanel(
                tabsetPanel(
                  tabPanel("Plots",
-                          plotOutput("tSNEPlot")
+                          plotOutput("tSNEPlot",width = "130%",height="800px")
                  ),
                  tabPanel("Informations",
                           h4("What it is:"),
@@ -285,16 +294,26 @@ fluidPage(
     tabPanel("SOMs",
              #SIDEBAR PANEL
              sidebarPanel(
-               selectInput('category.SOMs', 'Select a category', ""),
+               selectInput('category.SOMs', 'Select a set of feature to be classified', "",multiple = TRUE),
                sliderInput("slider_xdim", "xdim", 1, 50 , 4),
-               sliderInput("slider_ydim", "ydim:", 1, 50 , 4)
+               sliderInput("slider_ydim", "ydim:", 1, 50 , 4),
+               checkboxInput("check_scaled", label = "Check if you want scaled data", value = TRUE),
                #sliderInput("slider_max_iter", "Max iteration:", 1, 2000 , 500)
              ), #end SIDEBAR PANEL
 
              mainPanel(
                tabsetPanel(
                  tabPanel("Plots",
-                          plotOutput("somsPlot")
+                          plotOutput("somsPlot.change"),
+                          plotOutput("somsPlot.count"),
+                          plotOutput("somsPlot.mapping"),
+                          plotOutput("somsPlot.dist"),
+                          plotOutput("somsPlot.codes"),
+                          selectInput('property.SOMs', 'Select a feature to be classified', ""),
+                          plotOutput("somsPlot.property"),
+                          plotOutput("somsPlot.tree",width = "150%"),
+                          numericInput("soms.tree.h", "Height (h) to cut the tree", 1, min = 1, max = 10000),
+                          plotOutput("somsPlot.map.hc")
                  ),
                  tabPanel("Informations",
                           h4("What it is:"),

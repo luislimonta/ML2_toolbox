@@ -7,6 +7,7 @@ library(Rtsne)
 # install_github("kassambara/factoextra")
 # library("factoextra")
 library("factoextra")
+library(kohonen)
 
 #-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#
 #
@@ -178,8 +179,14 @@ function(input, output,session) {
                       choices = names(df), selected = names(df)[2])
     updateSelectInput(session, inputId = 'category.tSNE', label = 'Select a category',
                       choices = names(df), selected = names(df))
-    updateSelectInput(session, inputId = 'category.SOMs', label = 'Select a category',
+    updateSelectInput(session, inputId = 'category.SOMs', label = 'Select a set of feature to be classified',
                       choices = names(df), selected = names(df))   
+    observe({
+      updateSelectInput(session, inputId = 'property.SOMs',
+                        choices = names(df[, c(input$category.SOMs)]) ,selected = names(df)) 
+    })
+    
+    
     
  return(df)
     
@@ -259,15 +266,15 @@ function(input, output,session) {
       return (as.matrix(scale(data)))
     }
   })
-  # output$heatmap <- renderD3heatmap({
-  #   scaled_data <- scaled_data()
-  #   d3heatmap(scaled_data, 
-  #                    Rowv=NA, Colv=NA, 
-  #                    col=topo.colors(200, alpha=0.5), 
-  #                    scale="none", 
-  #                    xaxis_font_size=10, 
-  #                    yaxis_font_size=10)
-  #   }) 
+  output$heatmap <- renderD3heatmap({
+    scaled_data <- scaled_data()
+    d3heatmap(scaled_data,
+                     Rowv=NA, Colv=NA,
+                     col=topo.colors(200, alpha=0.5),
+                     scale="none",
+                     xaxis_font_size=10,
+                     yaxis_font_size=10)
+    })
   
   hc <- reactive({
     scaled_data <- scaled_data()
@@ -443,16 +450,185 @@ function(input, output,session) {
          col=colors[row_label])
     
   })
+
+  
+  # SOMs ----
+  
+  # select the features that will be searched as a scaled matrix ----
+  select.rest.soms <- reactive({
+    
+    #data for tsne preparation
+    data <- readData()
+    
+    # Remove duplicates in data:
+    data_unique <- unique(data)
+    
+    #separate data set in cat. and rest
+    category <- input$category.SOMs
+    
+    #rest data set
+    rest.data <- data_unique[, c(category)]
+    rest.data <- convertFactorToNumeric(rest.data)
+    
+    if(input$check_scaled == TRUE) {
+      rest.data.matrix <- as.matrix(scale(rest.data))
+      return(rest.data.matrix)
+    }
+    else {
+      rest.data.matrix <- as.matrix(rest.data)
+      return(rest.data.matrix)
+    } #end else
+
+    
+    return(rest.data.matrix)
+  })
+  
+  # Select column to be labeled in some plots TODO----
+  select.col.soms <- reactive({
+    
+    #data for soms preparation
+    data <- readData()
+    
+    # Remove duplicates in data:
+    data_unique <- unique(data)
+    
+    #separate data set in cat. and rest
+    category <- input$category.SOMs
+    
+    #cat data set
+    cat.data <- data_unique[, c(category)]
+    return(cat.data)
+    
+  })
+  
+  # Train som model
+  
+  som.model <- reactive({
+    
+    rest.data.matrix.soms <- select.rest.soms()
+
+    # Define the neuronal grid
+    som_grid <- somgrid(xdim = input$slider_xdim, ydim = input$slider_ydim,
+                        topo="hexagonal") #rondom choice, we can vary this
+    
+    
+    # Train the model
+    som_model <- som(rest.data.matrix.soms,
+                     grid=som_grid,
+                     rlen=1000,
+                     alpha=c(0.05,0.01),
+                     keep.data = TRUE)
+    return(som_model)
+    
+  })
+  
+  # Plot training progress ----
+  output$somsPlot.change <- renderPlot({
+
+    # Check training progress
+    plot(som.model(), type="changes")
+    
+    
+  })
+  
+  # Plot count: how many samples are mapped to each node on the map. (5-10 samples per node) ----
+  output$somsPlot.count <- renderPlot({
+    
+    # Check training progress
+    plot(som.model(), type="count")
+    
+  })
+  
+  # Plot mapping ----
+  output$somsPlot.mapping <- renderPlot({
+    
+    cat.data <- select.col.soms()
+    rest.data.matrix <- select.rest.soms()
+    
+    # For plotting evaluation against colorcode # category (~ classification solution) 
+    row_label <- as.factor(rownames(rest.data.matrix)) # set the rownames as factor
+    levels_category<-(as.factor(cat.data))# convert the categorx to levels
+    colors <- rainbow(nlevels(levels_category))#set color palete for the category 
+    colors <- colors[as.numeric(levels_category)] #set colors to the chosen category
+
+    plot(som.model(), type="mapping",
+         col=colors[row_label])
+    
+  })
+  
+  
+  # Plot dist.neighbours ----
+  output$somsPlot.dist <- renderPlot({
+    # U-Matrix: measure of distance between each node and its neighbours.
+    # (Euclidean distance between weight vectors of neighboring neurons)
+    # Can be used to identify clusters/boundaries within the SOM map.
+    # Areas of low neighbour distance ~ groups of nodes that are similar.
+    plot(som.model(), type="dist.neighbours")
+    
+  })
+  
+  # Plot Codes / Weight vectors ----
+  output$somsPlot.codes <- renderPlot({
+    
+    # Codes / Weight vectors: representative of the samples mapped to a node.
+    # highlights patterns in the distribution of samples and variables.
+    plot(som.model(), type="codes")
+  
+  })
+  
+  # Color Pallet function ----
+  coolBlueHotRed <- function(n, alpha = 1) {rainbow(n, end=4/6, alpha=alpha)[n:1]}
+  
+  
+  # Plot Property: Heatmaps ----
+  # Heatmaps: identify interesting areas on the map.
+  # Visualise the distribution of a single variable (defined in [,x])
+  # across the map
+  # colnames(data) # to check index to put in [,x]
+  output$somsPlot.property <- renderPlot({
+    som_cluster <- som_cluster(input$soms.tree.h)
+    rest.data.matrix.soms <- select.rest.soms()
+    property <- grep(input$property.SOMs, colnames(rest.data.matrix.soms))
+    plot(som.model(), type = "property", property = getCodes(som.model(), 1)[,property], main=colnames(getCodes(som.model()))[property], palette.name=coolBlueHotRed)
+    # Visualize properties based on HC
+    add.cluster.boundaries(som.model(),som_cluster)
+  })
+  
+  # Clustering: isolate groups of samples with similar metrics ----
+  output$somsPlot.tree <- renderPlot({
+    som_model <- som.model()
+    tree <- as.dendrogram(hclust(dist(as.numeric(unlist(som_model$codes)))))
+    plot(tree, ylab = "Height (h)")
+  })
+  
+  # Cut the tree somewhere based on the above tree ----
+  som_cluster <- function(h){
+    som.model <- som.model()
+    cutree <- cutree(hclust(dist(as.numeric(unlist(som.model$codes)))),
+                        h=h)
+    return(cutree)
+  }
+  
+  # Visualize mapping based on HC ----
+  output$somsPlot.map.hc <- renderPlot({
+    pretty_palette <- c("skyblue2", 'lightseagreen', 'mistyrose2', 'palevioletred2',
+                        'lightsalmon3', 'tomato2', 'red4')
+    
+    rest.data.matrix <- select.rest.soms()
+    row_label <- as.factor(rownames(rest.data.matrix)) #label from rows.....
+    
+    som_cluster <- som_cluster(input$soms.tree.h)
+    
+    plot(som.model(), type="mapping",
+         bgcol = pretty_palette[som_cluster], col=colors[row_label])
+    add.cluster.boundaries(som.model(),som_cluster)
+
+  })
+  
+
+
+  
+
   
   
 }# end server function
-
-# SOMs ----
-
-
-
-
-
-
-
-
