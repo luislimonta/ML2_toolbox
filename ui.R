@@ -31,6 +31,10 @@ fluidPage(
                  
                  # Input: Checkbox if file has header ----
                  checkboxInput("header", "Header", TRUE),
+                 #checkboxInput("reduceThFactors", "Reduce factors to values", FALSE),
+                 #checkboxInput("replaceNull", "Replace NULLs to medians", FALSE),
+                 #checkboxInput("reduceThNull", "Reduce NULL columns to a threshold", FALSE),
+                 
                  
                  # Input: Select separator ----
                  radioButtons("sep", "Separator",
@@ -61,7 +65,7 @@ fluidPage(
                mainPanel(
                  
                  # Output: Data file ----
-                 DT::dataTableOutput("contents")
+                 tableOutput("contents")
                  
                )
                
@@ -98,8 +102,10 @@ fluidPage(
                  tabPanel("Plots",
                           #h4("Scree Plot"),
                           plotOutput("distPlot"),
+                          pre(includeText("KPlotScree.txt")),
                           #h4("K-mean Clustering Plot"),
-                          plotOutput("dfClusterPlot")
+                          plotOutput("dfClusterPlot"),
+                          pre(includeText("KPlotCluster.txt"))
                           
                           
                  ),
@@ -170,10 +176,11 @@ fluidPage(
                  tabPanel("Plots",
                           
                           plotOutput("dendPlot",width = "120%",height="800px"),
+                          pre(includeText("HCPlotDend.txt")),
                           
                           #d3heatmapOutput("heatmap", height="8000px", width="100%"),
-                          plotOutput("heatmatPlot",height="800px",width = "120%")
-                  
+                          plotOutput("heatmatPlot",height="800px",width = "120%"),
+                          pre(includeText("HCPlotHeat.txt"))
                           
                  ),
                  # tab 2 ----
@@ -214,13 +221,18 @@ fluidPage(
                tabsetPanel(
                  # Tab plot ----
                  tabPanel("Plots",
-                          plotOutput("biPlot",width = "150%",height="800px"),
+                          plotOutput("biPlot",width = "130%",height="800px"),
                           sliderInput("slider_midpoint", "midpoint:", 0, 10 , 0.5,step = 0.1),
+                          pre(includeText("pcaPlotBiplot.txt")),
+                          
                           plotOutput("scree.pca.Plot"),
+                          pre(includeText("pcaPlotBiplot.txt")),
                           plotOutput("pvePlot"),
+                          pre(includeText("pcaPlotPVE.txt")),
                           plotOutput("cumulative.pvePlot"),
-                          verbatimTextOutput("rotation.matrix")
-                          #plotOutput("starPlot")
+                          pre(includeText("pcaPlotCPVE.txt")),
+                          plotOutput("starPlot"),
+                          pre(includeText("pcaPlotStar.txt"))
                   
                  ),
                 # Tab Info ----
@@ -264,7 +276,8 @@ fluidPage(
              mainPanel(
                tabsetPanel(
                  tabPanel("Plots",
-                          plotOutput("tSNEPlot",width = "130%",height="800px")
+                          plotOutput("tSNEPlot",width = "130%",height="800px"),
+                          pre(includeText("tSNEPlottSNE.txt"))
                  ),
                  tabPanel("Informations",
                           h4("What it is:"),
@@ -305,15 +318,23 @@ fluidPage(
                tabsetPanel(
                  tabPanel("Plots",
                           plotOutput("somsPlot.change"),
+                          pre(includeText("somsPlotChange.txt")),
                           plotOutput("somsPlot.count"),
+                          pre(includeText("somsPlotCount.txt")),
                           plotOutput("somsPlot.mapping"),
+                          pre(includeText("somsPlotMapping.txt")),
                           plotOutput("somsPlot.dist"),
+                          pre(includeText("somsPlotDist.txt")),
                           plotOutput("somsPlot.codes"),
+                          pre(includeText("somsPlotCodes.txt")),
                           selectInput('property.SOMs', 'Select a feature to be classified', ""),
                           plotOutput("somsPlot.property"),
+                          pre(includeText("somsPlotProperty.txt")),
                           plotOutput("somsPlot.tree",width = "150%"),
+                          pre(includeText("somsPlotTree.txt")),
                           numericInput("soms.tree.h", "Height (h) to cut the tree", 1, min = 1, max = 10000),
-                          plotOutput("somsPlot.map.hc")
+                          plotOutput("somsPlot.map.hc"),
+                          pre(includeText("somsPlotMapHC.txt"))
                  ),
                  tabPanel("Informations",
                           h4("What it is:"),

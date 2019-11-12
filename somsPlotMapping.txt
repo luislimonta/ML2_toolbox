@@ -1,0 +1,4 @@
+We can choose, which categorial variable, should be represented in the mapping.\n
+    In this case it's the winetype (red vs. withe), displayed in the equivalent colors\n
+    We see, that the redwines are clusteres in the upper and lower left corner, \n
+    while the whitewines (with a bigger sample size) are spread through the neurons.\n

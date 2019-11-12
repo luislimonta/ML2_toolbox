@@ -8,6 +8,7 @@ library(Rtsne)
 # library("factoextra")
 library("factoextra")
 library(kohonen)
+library(ggplot2)
 
 #-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#
 #
@@ -187,20 +188,34 @@ function(input, output,session) {
     })
     
     
-    
  return(df)
     
   })
 
   
 # Create table to visualize the data set
-  output$contents <- DT::renderDataTable({
-    df <- readData()
+  output$contents <- renderTable({
+    #df <- readData()
     # input$file1 will be NULL initially. After the user selects
     # and uploads a file, head of that data file by default,
     # or all rows if selected, will be shown.
     
-    # DT::datatable(df) #this one or the one below
+    #DT::datatable(df) #this one or the one below
+    
+    req(input$file1)
+    
+    tryCatch(
+      {
+        df <- read.csv(input$file1$datapath,
+                       header = input$header,
+                       sep = input$sep,
+                       quote = input$quote)
+      },
+      error = function(e) {
+        # return a safeError if a parsing error occurs
+        stop(safeError(e))
+      }
+    )
     
     if(input$disp == "head") {
       return(head(df))
@@ -616,17 +631,20 @@ function(input, output,session) {
     
     rest.data.matrix <- select.rest.soms()
     row_label <- as.factor(rownames(rest.data.matrix)) #label from rows.....
+    col <- rainbow(nlevels(row_label))#set color palete for the category 
+   
     
     som_cluster <- som_cluster(input$soms.tree.h)
     
     plot(som.model(), type="mapping",
-         bgcol = pretty_palette[som_cluster], col=colors[row_label])
+         bgcol = pretty_palette[som_cluster], col=col)
     add.cluster.boundaries(som.model(),som_cluster)
 
   })
   
 
-
+  output$default <- renderText({ input$txt })
+  output$placeholder <- renderText({ input$txt })
   
 
   

@@ -1,0 +1,5 @@
+    Having a look on the number of observations per note, we find,\n
+    that the observtions are not evenly distributed.\n
+    Some  notes do have more than 30 observation, while other notes have less then 10. \n
+    The bigger part of notes include 10-20 observations. So it seems we should take more than 20X20nodes.\n
+    For the visual representation we leave it with this number of notes.\n
