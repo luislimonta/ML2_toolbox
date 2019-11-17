@@ -1,1 +1,16 @@
-Hoi
+The scree plot above shows the numbers of clusters on the x-axis and the total within cluster sum of squares on the y-axis.
+As we can see the total number of sum of squares decreases with every additional cluster. 
+The observed behaviour makes sense because with every additional cluster the distance of the data points to its centroid is very likely to be smaller.
+Hence, the total witin-cluster sum of squares is 0 if k = number of observations.
+
+In the scree plot we aim to find the number of clusters (k) that is best for our dataset. We therefore check the tradeoff between additional loss in sum of squares and complexity of the model.
+
+Interpretation of the results in the wine dataset:
+The scree plot shows that with two clusters, the dataset is very well clustered. 
+After two (to four) clusters, additional clusters do not reduce the total within-cluster sum of squares significantly anymore.
+
+This makes sense because we have two types of wine within the dataset (red & white). Thus, the k-means algorithm detects the two types of wine and cluster along them.
+The predictor wine.type indicates what type of wine it is. This might be a strong predictor and therefore affect the outcome of the algorithm.
+
+Remark:
+If we remove the predictor wine.type from the dataset. The scree plot shows that 
