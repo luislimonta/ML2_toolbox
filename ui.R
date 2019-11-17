@@ -278,6 +278,8 @@ With the Matrix of Dissimilarity the similarity in the dataset can be evaluated.
                           #pre(includeText("pcaPlotStar.txt"))
                   
                  ),
+                 tabPanel("Overview",verbatimTextOutput("sum"),
+                 pre(includeText("pcaOverview.txt"))),
                 # Tab Info ----
                  tabPanel("Informations",
                           h4("What it is:"),
@@ -367,6 +369,7 @@ With the Matrix of Dissimilarity the similarity in the dataset can be evaluated.
 
              mainPanel(
                tabsetPanel(
+                 
                  tabPanel("Plots",
                           h4("SOMs"),
                           "SOM is an unsupervised, nonlinear, parametric method and can be considered as an artificial neural network. It includes mapping from a higher-dimensional input space to a lower-dimensional map space with competitive learning and therefore reduces dimensionality of a datasets. Neural network uses competitive learning. It is used for data visualization of high-dimensional data. This method is somewhat similar to K-means (SOMs with a small number of nodes behave similar to K-means) and similar to PCA as it can be considered to be a nonlinear generalization of PCA.",

@@ -1,1 +1,1 @@
-Hoi
+There is a clear separation of the two clusters of wine.type present. So, one cluster refers to white wine and the other to red wine. For all the other categories it is hard to see a cluster in the dataset.

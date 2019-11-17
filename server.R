@@ -347,6 +347,10 @@ function(input, output,session) {
     return(pca.out)
   }
   
+  output$sum <- renderPrint({
+    pca.out()
+  })
+  
   # Scree plot
   output$scree.pca.Plot <- renderPlot({
     screeplot(pca.out())
