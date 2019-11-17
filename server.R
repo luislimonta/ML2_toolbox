@@ -1,16 +1,17 @@
 #Import packages
 library(shiny)
-library(Rtsne)
-#to install factoextra
-# install.packages ("processx")
-# library("devtools")
-# install_github("kassambara/factoextra")
-# library("factoextra")
-library("factoextra")
-library(kohonen)
+library(shinythemes)
+library(RColorBrewer)
+library(d3heatmap)
 library(ggplot2)
+library(Rtsne)
 library(plotly)
+library(kohonen)
+library(d3heatmap)
+library(devtools)
+library(factoextra)
 
+set.seed(4)
 #-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#
 #
 # Create preprocessing functions                                                      #######----

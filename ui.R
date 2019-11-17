@@ -1,8 +1,15 @@
+#Import packages
 library(shiny)
-#install.packages("d3heatmap")
-library(d3heatmap)
 library(shinythemes)
 library(RColorBrewer)
+library(d3heatmap)
+library(ggplot2)
+library(Rtsne)
+library(plotly)
+library(kohonen)
+library(d3heatmap)
+library(devtools)
+library(factoextra)
 
 fluidPage(
   theme=shinytheme("readable"),
@@ -200,11 +207,10 @@ With the Matrix of Dissimilarity the similarity in the dataset can be evaluated.
                           tags$hr(),
                           
                           plotOutput("dendPlot",width = "120%",height="800px"),
-                          pre(includeText("HCPlotDend.txt")),
                           
                           #d3heatmapOutput("heatmap", height="8000px", width="100%"),
                           plotOutput("heatmatPlot",height="800px",width = "120%"),
-                          pre(includeText("HCPlotHeat.txt"))
+                          pre(includeText("HCPlot.txt"))
                           
                  ),
                  # tab 2 ----
@@ -365,25 +371,32 @@ With the Matrix of Dissimilarity the similarity in the dataset can be evaluated.
                           h4("SOMs"),
                           "SOM is an unsupervised, nonlinear, parametric method and can be considered as an artificial neural network. It includes mapping from a higher-dimensional input space to a lower-dimensional map space with competitive learning and therefore reduces dimensionality of a datasets. Neural network uses competitive learning. It is used for data visualization of high-dimensional data. This method is somewhat similar to K-means (SOMs with a small number of nodes behave similar to K-means) and similar to PCA as it can be considered to be a nonlinear generalization of PCA.",
                           tags$hr(),
-     
+                
                           plotOutput("somsPlot.change"),
                           pre(includeText("somsPlotChange.txt")),
+                          
                           plotOutput("somsPlot.count"),
                           pre(includeText("somsPlotCount.txt")),
          
                           plotOutput("somsPlot.dist"),
                           pre(includeText("somsPlotDist.txt")),
+                    
+                          
+                          selectInput('property.SOMs', 'Select a feature to be classified', ""),
+                          plotOutput("somsPlot.property"),
+                          pre(includeText("somsPlotProperty.txt")),
+                          
                           plotOutput("somsPlot.codes"),
                           pre(includeText("somsPlotCodes.txt")),
                           
-                          selectInput('property.SOMs', 'Select a feature to be classified', ""),
-                          plotOutput("somsPlot.mapping"),
-                          pre(includeText("somsPlotMapping.txt")),
-                          
-                          plotOutput("somsPlot.property"),
-                          pre(includeText("somsPlotProperty.txt")),
                           plotOutput("somsPlot.tree",width = "150%"),
                           pre(includeText("somsPlotTree.txt")),
+                          
+                          
+                          plotOutput("somsPlot.mapping"),
+                          pre(includeText("somsPlotMapping.txt")),
+                  
+
                           numericInput("soms.tree.h", "Height (h) to cut the tree", 1, min = 1, max = 10000),
                           plotOutput("somsPlot.map.hc"),
                           pre(includeText("somsPlotMapHC.txt"))
