@@ -1,0 +1,3 @@
+We now can use hierarchical clustering to find clusterboundaries along the nodes.
+Since we don't want to add to much complexity, we will cut the tree at a relativly high h of 3,5.
+We get 4 different clusters.

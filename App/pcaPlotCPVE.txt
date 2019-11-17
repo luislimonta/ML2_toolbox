@@ -1,0 +1,4 @@
+ Relatively we see, that the first principal Component explains by far the most variance.
+ After the fourth component the explanatory value of the other components kind of king and stick on the same level.
+ If we would consider the ellbowcriteria we would take the first four components, which explain 70.8% of the variation.
+

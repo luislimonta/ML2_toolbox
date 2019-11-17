@@ -1,9 +1,0 @@
-   After clustering, the structure seems do get even more complex:\n
-    The boundaries are not too smooth and the clusters (espacially the blue one)  have many 'exclaves'.\n
-    In order to reduce complexity and resulting in not to many clusters, \n
-    we cut the tree with a comperativly large h. \n
-    Visualizing the mappping, we see, that the cluster boundaries are not anything really near the Red/whitewine boundary.\n
-    When playing around with the porperties, we find, that the properties mentioned above seem to have no real connection to the clustering.\n
-    Fixed acidity seem to have a really clear imput on the clustering:\n
-    Low acidity: dark green cluster, low-middle accidity: Blue cluster,\n
-    Middle-High acidity: light rose cluster, High acidity: magenta cluster\n.

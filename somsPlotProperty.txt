@@ -1,8 +1,0 @@
-   We can play here a little, on which feature should be represented.\n\n
-    If we look on quality, we will find high quality on the right top corner. \n
-   lLow alcohol is clustered diagonally from the top left corner to the red bottom corner.\n
-    PH-Values are high in the middle, and the top left corner.\n
-    The strong outlier is characterized by really high density. Here might a doubble check in Datacleaning be advisable.\n
-    As mentioned in the codes plot: The observations in th right top corner seems to have a higher dioxide value.\n
-    
-    

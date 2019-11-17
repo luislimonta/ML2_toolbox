@@ -1,2 +1,0 @@
- The training curve displays a rather slow but smooth training progress.\n
-    We should consider improving the training rate.-------\n

@@ -1,0 +1,7 @@
+We can find an overview of the loadings of the principal components.
+From this we can try to interpret the meaning of the components.
+    
+In this case PC1 seems to represent the wine Type. It has low values for withe Wines and high values for red wines.
+PC2 represents the density with low values for heavy, sugary wines and low values for light wines with higher alcohol amount.
+PC3 seems to represent Acidity or the Ph-Value
+PC4 seems might represent quality of the wine: In terms of sulphates.

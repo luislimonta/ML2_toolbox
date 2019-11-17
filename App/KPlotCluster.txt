@@ -1,0 +1,10 @@
+In the clsutering plot, we can plot the clusters in a two-dimensional space. We can plot two predictors in the plot. One on the x-axis and ther other on the y-axis. The centriods are marked with an x.
+If the centroids are close to each other, we can say that the two variables do not have a clearly distinct allocation to a cluster.
+
+With three and four clusters, most of the variables do not show clear bounderies. The only predictor that shows clear boundaries is total.sulfur.dioxide.
+For two clusters the structre in the predictors are much clearer. An increasingly higher number of clusters does not improve the structre of the clusters as shown in the clustering plot.
+This is why we suggest taking two clusters.
+
+
+
+

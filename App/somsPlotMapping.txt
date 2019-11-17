@@ -1,0 +1,6 @@
+We can choose, which categorial variable, should be represented in the mapping.
+When mapping the winetype (red vs. white), we see, 
+that the redwines are clusteres together,
+while the whitewines (with a bigger sample size) are spread through the neurons.
+
+As it seems are the SOMs a good instrument in order to differentiate winetypes.

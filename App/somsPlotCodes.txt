@@ -1,0 +1,6 @@
+    As we have a lot of nodes and variables, the codes plot is not easy to interpret.
+    On the upper right, there property quality seems to hava a bigger impact.
+    In the middle there seem to be a couple of nodes, which do not represent any particular feature.
+    The nodes toward the lower left corner seem to have more alcohol.
+    Whereas the nodes on the bottom  right seem to have higher dioxide rates.
+    With so many features and notes, it is advisable to use a heatmap to visualize the codes.

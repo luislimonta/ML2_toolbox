@@ -1,0 +1,7 @@
+    Having a look on the number of observations per note, we find,
+    that the observtions are not evenly distributed.
+    Some  notes do have more than 30 observation, while other notes have less then 5.
+    The bigger part of notes include 10-20 observations. 
+    So it seems we should take more than 20X20 nodes to get the best distribution
+    of around 5-10 obervations per node.
+    For the visual representation we leave it with this number of notes.

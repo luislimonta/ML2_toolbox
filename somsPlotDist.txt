@@ -1,4 +1,0 @@
-    Checking the Euclidiean distance, we find, that allmost all notes have the same low distance arund 15.\n
-    There are only a few notes on the left with slightly higher values\n
-    and a strong outligher on the right corner with a distance of over 100. \n
-    Except for the strong outlier, there are no indicators for cluster boundaries.\n
