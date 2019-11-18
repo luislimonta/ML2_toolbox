@@ -245,6 +245,7 @@ function(input, output,session) {
   
 #Plot the results of the calculated kmeans ----
   output$dfClusterPlot <- renderPlot({
+    set.seed(4)
     palette(c("#E41A1C", "#377EB8", "#4DAF4A", "#984EA3",
               "#FF7F00", "#FFFF33", "#A65628", "#F781BF", "#999999"))
     
@@ -257,13 +258,14 @@ function(input, output,session) {
   
 #To analyse how many cluster do we want ----
   wss <- reactive({
-    set.seed(3)
+    set.seed(4)
     sapply(1:input$slider_k, function(i){return(kmeans(readData(),centers = i,nstart=input$slider_nstart)$tot.withinss)})
   })
   
   
 # Scree Plot   ----
   output$distPlot <- renderPlot({
+    set.seed(4)
     plot(1:input$slider_k, wss(), type="b", xlab="Number of Clusters",ylab="Total within-cluster sum of squares",main="Scree Plot")
     text(1:input$clusters, wss()[1:input$clusters], round(wss(),digits=2)[1:input$clusters], cex=1, pos=4, col="blue")
     #text(1:3, km.out$withinss[1:3], round(km.out$withinss,digits=2)[1:3], cex=0.6, pos=1, col="blue")
@@ -276,6 +278,7 @@ function(input, output,session) {
   
 # HC ----  
   scaled_data <- reactive({
+    set.seed(4)
     # get all data
     data <- readData()
     data <- convertFactorToNumeric(data) #convert factor to numeric
@@ -298,6 +301,7 @@ function(input, output,session) {
     })
   
   hc <- reactive({
+    set.seed(4)
     scaled_data <- scaled_data()
     
     # calculate distances between data
@@ -315,12 +319,14 @@ function(input, output,session) {
   
   #plot the output Dendogram
   output$dendPlot <- renderPlot({
+    set.seed(4)
     #TODO: Plot cutree and make button to cut tree
     plot(hc())
   })  
   
   #plot heatmap
   output$heatmatPlot <- renderPlot({
+    set.seed(4)
     scaled_data <- scaled_data()
     heatmap(scaled_data, scale="row", density.info="none", trace="none",
             col = topo.colors(200, alpha=0.5),
@@ -340,6 +346,7 @@ function(input, output,session) {
 # PCA ----
   # Compute PCA. ----
   pca.out <- function(){
+    set.seed(4)
     # scale=TRUE to scale the variables to have standard deviation = 1 
     data <- readData()
     data <- convertFactorToNumeric(data)
@@ -348,16 +355,19 @@ function(input, output,session) {
   }
   
   output$sum <- renderPrint({
+    set.seed(4)
     pca.out()
   })
   
   # Scree plot
   output$scree.pca.Plot <- renderPlot({
+    set.seed(4)
     screeplot(pca.out())
   })
   
   # Plot biplot ----
   output$biPlot <- renderPlot({
+    set.seed(4)
     pr.out <- pca.out()
     #biplot(pr.out,scale=0)
     fviz_pca_biplot(pr.out, label ="var", col.ind="cos2") +
@@ -370,6 +380,7 @@ function(input, output,session) {
 
   # Plot biplot 2 ---- 
   output$circPlot <- renderPlot({   
+    set.seed(4)
     pr.out <- pca.out()
     #biplot without observations, circumference of the correlation circle ####
     fviz_pca_var(pr.out, col.var="contrib") +
@@ -381,6 +392,7 @@ function(input, output,session) {
   
   # Plot stars ----
   output$starPlot <- renderPlot({
+    set.seed(4)
     df <- readData()
     stars(df)
     stars(df, key.loc = c(20,2)) 
@@ -388,6 +400,7 @@ function(input, output,session) {
   
   # Compute the proportion of variance explained by each principal component (variance explained by each principal component / total variance explained by all four principal components) ----
   pve <- function(){
+    set.seed(4)
     pr.out <- pca.out()
     pr.var<- pr.out$sdev^2
     pve <- pr.var/sum(pr.var)
@@ -396,11 +409,13 @@ function(input, output,session) {
   
   # Proportion of Variance Explained ----
   output$pvePlot <- renderPlot({
+    set.seed(4)
     plot(pve() ,xlab="Principal Component",ylab="Proportion of Variance Explained",ylim=c(0,1),type='b') 
   })
  
   # Cumulative Proportion of Variance Explained ----
   output$cumulative.pvePlot <- renderPlot({
+    set.seed(4)
     plot(cumsum(pve()),xlab="PrincipalComponent",ylab="Cumulative Proportion of Variance Explained",ylim=c(0,1),type='b')
   })
   
@@ -422,6 +437,7 @@ function(input, output,session) {
   
   # Select matrix ----
   select.tsne.rest.data.matrix <- reactive({
+    set.seed(4)
     #data for tsne preparation
     data <- readData()
     
@@ -442,6 +458,7 @@ function(input, output,session) {
 
   # Select column to search categories within the matrix ----
   select.tsne.col.data <- reactive({
+    set.seed(4)
     #data for tsne preparation
     data <- readData()
     
@@ -460,7 +477,7 @@ function(input, output,session) {
   
   # Plot output ----
   output$tSNEPlot <- renderPlotly({
-    
+    set.seed(4)
     cat.data <- as.matrix (select.tsne.col.data())
     rest.data.matrix <- select.tsne.rest.data.matrix()
     
@@ -511,6 +528,7 @@ function(input, output,session) {
   
   # select the features that will be searched as a scaled matrix ----
   select.rest.soms <- reactive({
+    set.seed(4)
     
     #data for tsne preparation
     data <- readData()
@@ -540,6 +558,7 @@ function(input, output,session) {
   
   # Select column to be labeled in some plots TODO----
   select.col.soms <- reactive({
+    set.seed(4)
     
     #data for soms preparation
     data <- readData()
@@ -559,6 +578,7 @@ function(input, output,session) {
   # Train som model
   
   som.model <- reactive({
+    set.seed(4)
     
     rest.data.matrix.soms <- select.rest.soms()
 
@@ -579,6 +599,7 @@ function(input, output,session) {
   
   # Plot training progress ----
   output$somsPlot.change <- renderPlot({
+    set.seed(4)
 
     # Check training progress
     plot(som.model(), type="changes")
@@ -588,6 +609,7 @@ function(input, output,session) {
   
   # Plot count: how many samples are mapped to each node on the map. (5-10 samples per node) ----
   output$somsPlot.count <- renderPlot({
+    set.seed(4)
     
     # Check training progress
     plot(som.model(), type="count")
@@ -596,6 +618,7 @@ function(input, output,session) {
   
   # Plot mapping ----
   output$somsPlot.mapping <- renderPlot({
+    set.seed(4)
     
     cat.data <- input$property.SOMs #variable to be classified
     rest.data.matrix <- select.rest.soms()
@@ -615,6 +638,7 @@ function(input, output,session) {
   
   # Plot dist.neighbours ----
   output$somsPlot.dist <- renderPlot({
+    set.seed(4)
     # U-Matrix: measure of distance between each node and its neighbours.
     # (Euclidean distance between weight vectors of neighboring neurons)
     # Can be used to identify clusters/boundaries within the SOM map.
@@ -625,6 +649,7 @@ function(input, output,session) {
   
   # Plot Codes / Weight vectors ----
   output$somsPlot.codes <- renderPlot({
+    set.seed(4)
     
     # Codes / Weight vectors: representative of the samples mapped to a node.
     # highlights patterns in the distribution of samples and variables.
@@ -642,6 +667,7 @@ function(input, output,session) {
   # across the map
   # colnames(data) # to check index to put in [,x]
   output$somsPlot.property <- renderPlot({
+    set.seed(4)
     som_cluster <- som_cluster(input$soms.tree.h)
     rest.data.matrix.soms <- select.rest.soms()
     property <- grep(input$property.SOMs, colnames(rest.data.matrix.soms))
@@ -652,6 +678,7 @@ function(input, output,session) {
   
   # Clustering: isolate groups of samples with similar metrics ----
   output$somsPlot.tree <- renderPlot({
+    set.seed(4)
     som_model <- som.model()
     tree <- as.dendrogram(hclust(dist(as.numeric(unlist(som_model$codes)))))
     plot(tree, ylab = "Height (h)")
@@ -659,6 +686,7 @@ function(input, output,session) {
   
   # Cut the tree somewhere based on the above tree ----
   som_cluster <- function(h){
+    set.seed(4)
     som.model <- som.model()
     cutree <- cutree(hclust(dist(as.numeric(unlist(som.model$codes)))),
                         h=h)
@@ -667,6 +695,7 @@ function(input, output,session) {
   
   # Visualize mapping based on HC ----
   output$somsPlot.map.hc <- renderPlot({
+    set.seed(4)
     pretty_palette <- c("skyblue2", 'lightseagreen', 'mistyrose2', 'palevioletred2',
                         'lightsalmon3', 'tomato2', 'red4')
     

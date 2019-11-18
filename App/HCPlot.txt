@@ -1,3 +1,5 @@
+Premis: Please use the Distance methods: Euclidean and Linkage methods: ward.D and check the Checkbox for the tree predictor for the interpretation.
+
 It is very hard to read something from the tree or the dendrogram as there are too many information’s on them. But what we can see on the cluster that there is a cluster on wine.type. Also, when we check the box for predictions you can see some clusters with the dendrogram.Obviously, there are two main clusters divided by the parameters.In wine.types, one can thus conclude on 2 or 4 clusters (2 clusters: 1. cluster red, 2. cluster red and white mixed ; 4 clusters: 1. red, 2. white, 3. red. 4. white.)
 
 What is interesting is that if you start from 4 clusters, then you have red wines with very high "fixed acidity" and red wines with rather average "fixed acidity". And with the white wines one sees a cluster with average quality and alcohol content and a cluster with high quality and alcohol content.

@@ -1,9 +1,21 @@
    We can play here a little, on which feature should be represented.
-   If we look on quality, we will find high quality at the bottom right corner.
-   High alcohol is clustered diagonally from the top left corner to the right bottom corner.
-   PH-Values are high on the bottom left and the right edge.
+   If we look on quality, we will find high quality at the top right corner.
+   Low alcohol is clustered diagonally from the top left corner to the right bottom corner.
+   PH-Values are high in the middle.
    The strong outlier, detected in the distances plot, is characterized by really high density. 
    Here might be advisable to double check the datacleaning.
-   As mentioned in the codes plot: The observations in the right top corner seems to have a higher dioxide value.
+   As mentioned in the codes plot: The observations in the right top left corner seems to have a higher dioxide value.
+
+   When we check the cluster bounderies, we will find, 
+   that the properties mentioned above seem to have no real connection to the clustering.
+   Fixed acidity seem to have a really clear imput on the clustering:
+   Low acidity: dark green cluster, low-middle accidity: Blue cluster,
+   Middle-High acidity: light rose cluster, High acidity: magenta cluster.
+
+
+   Attention: This interpretation is only valid, if the seed are set correctly (here 4). 
+   If the seed is set incorrectly, the locations of the properties might change, 
+   but the same heatpoint can be detected anyways. 
+   And the relation for fixed acidity and cluster bounderies stays the same.
     
     
