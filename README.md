@@ -5,6 +5,8 @@ Toolbox to apply unsupervised learning methods with R in Shiny by students of
 
 Please compute the init.R file first before you load the toolset. There is the wine.csv dataset that we used for our interpretations.
 
+This app can be used on https://ml2toolbox.shinyapps.io/shinnyapp/. The cloud permits only 25 hours of free usage. If you are not able to see it, the free usage is over and you have to run it locally.
+
 ## Team
 - [Ronny Maurhofer](https://github.com/ronnym20)
 - [Stephana Müller](https://github.com/pandorrasland)
