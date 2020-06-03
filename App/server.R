@@ -11,6 +11,8 @@ library(d3heatmap)
 library(devtools)
 library(factoextra)
 
+options(shiny.maxRequestSize=30*1024^2) 
+
 set.seed(4)
 #-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#
 #
